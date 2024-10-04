@@ -1,0 +1,6 @@
+@BNB.API_HostAddress = http://localhost:5259
+
+GET {{BNB.API_HostAddress}}/clientes/
+Accept: application/json
+
+###
