@@ -1,6 +1,5 @@
 ﻿using BNB.Application.Interfaces;
 using BNB.Domain.Entities;
-using BNB.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BNB.API.Controllers
