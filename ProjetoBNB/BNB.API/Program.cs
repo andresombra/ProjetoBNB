@@ -1,6 +1,20 @@
+using BNB.Application.Interfaces;
+using BNB.Application.Services;
+using BNB.Domain.Repositories;
+using BNB.Infrastructure;
+using BNB.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<BancoContext>();
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IClienteService,ClienteService>();
+
+builder.Services.AddDbContext<BancoContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

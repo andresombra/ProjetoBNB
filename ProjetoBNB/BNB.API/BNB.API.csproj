@@ -14,7 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BNB.Application\BNB.Application.csproj" />
     <ProjectReference Include="..\BNB.Domain\BNB.Domain.csproj" />
+    <ProjectReference Include="..\BNB.Infrastructure\BNB.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
