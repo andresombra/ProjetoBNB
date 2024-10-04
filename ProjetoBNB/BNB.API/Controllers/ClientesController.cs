@@ -1,4 +1,5 @@
-﻿using BNB.Domain.Entities;
+﻿using BNB.Application.Interfaces;
+using BNB.Domain.Entities;
 using BNB.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,24 +9,24 @@ namespace BNB.API.Controllers
     [Route("api/[controller]")]
     public class ClientesController : ControllerBase
     {
-        private readonly IClienteRepository _repository;
+        private readonly IClienteService _clienteService;
 
-        public ClientesController(IClienteRepository repository)
+        public ClientesController(IClienteService clienteService)
         {
-            _repository = repository;
+            _clienteService = clienteService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
         {
-            var clientes = await _repository.GetAllAsync();
+            var clientes = await _clienteService.ListarTodosClientesAsync();
             return Ok(clientes);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Cliente>> GetCliente(int id)
         {
-            var cliente = await _repository.GetByIdAsync(id);
+            var cliente = await _clienteService.BuscarIdAsync(id);
             if (cliente == null)
             {
                 return NotFound();
@@ -36,25 +37,21 @@ namespace BNB.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Cliente>> PostCliente(Cliente cliente)
         {
-            await _repository.AddAsync(cliente);
+            await _clienteService.IncluirAsync(cliente);
             return CreatedAtAction(nameof(GetCliente), new { id = cliente.Id }, cliente);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCliente(int id, Cliente cliente)
+        [HttpPut]
+        public async Task<IActionResult> PutCliente(Cliente cliente)
         {
-            if (id != cliente.Id)
-            {
-                return BadRequest();
-            }
-            await _repository.UpdateAsync(cliente);
+            await _clienteService.AlterarAsync(cliente);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCliente(int id)
         {
-            await _repository.DeleteAsync(id);
+            await _clienteService.ExcluirAsync(id);
             return NoContent();
         }
     }

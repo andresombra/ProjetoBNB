@@ -17,27 +17,27 @@ namespace BNB.Application.Services
             _clienteRepository = clienteRepository;
         }
 
-        public async Task Alterar(Cliente cliente)
+        public async Task AlterarAsync(Cliente cliente)
         {
             await _clienteRepository.UpdateAsync(cliente);
         }
 
-        public async Task<Cliente> BuscarId(int id)
+        public async Task<Cliente> BuscarIdAsync(int id)
         {
             return await _clienteRepository.GetByIdAsync(id);
         }
 
-        public void Excluir(int id)
+        public async Task ExcluirAsync(int id)
         {
-            _clienteRepository.DeleteAsync(id);
+            await _clienteRepository.DeleteAsync(id);
         }
 
-        public Task Incluir(Cliente cliente)
+        public Task IncluirAsync(Cliente cliente)
         {
             return _clienteRepository.AddAsync(cliente);
         }
 
-        public async Task<IEnumerable<Cliente>> ListarTodosClientes()
+        public async Task<IEnumerable<Cliente>> ListarTodosClientesAsync()
         {
             return await _clienteRepository.GetAllAsync();
         }

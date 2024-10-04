@@ -9,10 +9,10 @@ namespace BNB.Application.Interfaces
 {
     public interface IClienteService
     {
-        Task<IEnumerable<Cliente>> ListarTodosClientes();
-        Task<Cliente> BuscarId(int id);
-        Task Incluir(Cliente cliente);
-        Task Alterar(Cliente cliente);
-        void Excluir(int id);
+        Task<IEnumerable<Cliente>> ListarTodosClientesAsync();
+        Task<Cliente> BuscarIdAsync(int id);
+        Task IncluirAsync(Cliente cliente);
+        Task AlterarAsync(Cliente cliente);
+        Task ExcluirAsync(int id);
     }
 }
