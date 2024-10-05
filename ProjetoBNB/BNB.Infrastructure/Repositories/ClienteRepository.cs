@@ -18,15 +18,9 @@ namespace BNB.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<Cliente> GetByIdAsync(int id)
-        {
-            return await _context.Clientes.FindAsync(id);
-        }
+        public async Task<Cliente> GetByIdAsync(int id) => await _context.Clientes.FindAsync(id);
 
-        public async Task<IEnumerable<Cliente>> GetAllAsync()
-        {
-            return await _context.Clientes.ToListAsync();
-        }
+        public async Task<IEnumerable<Cliente>> GetAllAsync() => await _context.Clientes.ToListAsync();
 
         public async Task AddAsync(Cliente cliente)
         {
