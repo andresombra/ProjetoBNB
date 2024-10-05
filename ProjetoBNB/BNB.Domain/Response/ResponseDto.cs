@@ -10,9 +10,8 @@ namespace BNB.Domain.Response
 {
     public class ResponseDto
     {
-
-        public bool Status { get; set; }
         public object? Data { get; set; }
+        public bool Status { get; set; }
         public string? Mensagem { get; set; }
         
     }

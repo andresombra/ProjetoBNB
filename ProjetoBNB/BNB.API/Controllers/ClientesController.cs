@@ -2,6 +2,7 @@
 using BNB.Domain.Entities;
 using BNB.Domain.Response;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Text.Json;
 
 namespace BNB.API.Controllers
@@ -21,7 +22,26 @@ namespace BNB.API.Controllers
         public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
         {
             var clientes = await _clienteService.ListarTodosClientesAsync();
-            return Ok(clientes);
+            //return Ok(clientes);
+
+            var resp = new ResponseDto();
+
+            try
+            {
+               
+                resp.Status = true;
+                var json = JsonSerializer.Serialize<IEnumerable<Cliente>>(clientes).ToString();
+                resp.Data = JsonSerializer.Deserialize<IEnumerable<Cliente>>(json);
+                resp.Mensagem = "Lista de todos os clientes.";
+
+                return Ok(resp);
+            }
+            catch (Exception ex)
+            {
+                resp.Status = false;
+                resp.Mensagem += ex.Message;
+                return Ok(resp);
+            }
         }
 
         [HttpGet("{id}")]
