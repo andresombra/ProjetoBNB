@@ -3,6 +3,7 @@ using BNB.Domain.Entities;
 using BNB.Domain.Repositories;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,9 +33,16 @@ namespace BNB.Application.Services
             await _clienteRepository.DeleteAsync(id);
         }
 
-        public Task IncluirAsync(Cliente cliente)
+        public async Task<Cliente> IncluirAsync(Cliente cliente)
         {
-            return _clienteRepository.AddAsync(cliente);
+            await _clienteRepository.AddAsync(cliente);
+
+            if (cliente != null)
+            {
+                return cliente;
+            }
+
+            return new Cliente();
         }
 
         public async Task<IEnumerable<Cliente>> ListarTodosClientesAsync()

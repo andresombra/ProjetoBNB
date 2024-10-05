@@ -11,7 +11,7 @@ namespace BNB.Application.Interfaces
     {
         Task<IEnumerable<Cliente>> ListarTodosClientesAsync();
         Task<Cliente> BuscarIdAsync(int id);
-        Task IncluirAsync(Cliente cliente);
+        Task<Cliente> IncluirAsync(Cliente cliente);
         Task AlterarAsync(Cliente cliente);
         Task ExcluirAsync(int id);
     }

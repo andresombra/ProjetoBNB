@@ -1,6 +1,8 @@
 ﻿using BNB.Application.Interfaces;
 using BNB.Domain.Entities;
+using BNB.Domain.Response;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace BNB.API.Controllers
 {
@@ -34,10 +36,28 @@ namespace BNB.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Cliente>> PostCliente(Cliente cliente)
+        public async Task<ActionResult<ResponseDto>> PostCliente(Cliente cliente)
         {
-            await _clienteService.IncluirAsync(cliente);
-            return CreatedAtAction(nameof(GetCliente), new { id = cliente.Id }, cliente);
+            var resp = new ResponseDto();
+
+            try
+            {
+               await _clienteService.IncluirAsync(cliente);
+               resp.Status = true;
+               var json = JsonSerializer.Serialize<Cliente>(cliente).ToString();
+               resp.Data = JsonSerializer.Deserialize<Cliente>(json);
+               resp.Mensagem = "Cliente gravado com sucesso."; 
+                
+                return CreatedAtAction(nameof(PostCliente), resp);
+            }
+            catch (Exception ex)
+            {
+                resp.Status = false;
+                resp.Mensagem += ex.Message;
+                return Ok(resp); 
+            }
+
+            
         }
 
         [HttpPut]
