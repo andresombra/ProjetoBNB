@@ -21,17 +21,12 @@ namespace BNB.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
         {
-            var clientes = await _clienteService.ListarTodosClientesAsync();
-            //return Ok(clientes);
-
             var resp = new ResponseDto();
-
             try
             {
-               
+                var clientes = await _clienteService.ListarTodosClientesAsync();
                 resp.Status = true;
-                var json = JsonSerializer.Serialize<IEnumerable<Cliente>>(clientes).ToString();
-                resp.Data = JsonSerializer.Deserialize<IEnumerable<Cliente>>(json);
+                resp.Data = clientes;
                 resp.Mensagem = "Lista de todos os clientes.";
 
                 return Ok(resp);
@@ -64,11 +59,10 @@ namespace BNB.API.Controllers
             {
                await _clienteService.IncluirAsync(cliente);
                resp.Status = true;
-               var json = JsonSerializer.Serialize<Cliente>(cliente).ToString();
-               resp.Data = JsonSerializer.Deserialize<Cliente>(json);
+               resp.Data = cliente;
                resp.Mensagem = "Cliente gravado com sucesso."; 
                 
-                return CreatedAtAction(nameof(PostCliente), resp);
+               return CreatedAtAction(nameof(PostCliente), resp);
             }
             catch (Exception ex)
             {
