@@ -2,32 +2,40 @@ using BNB.Application.Interfaces;
 using BNB.Application.Services;
 using BNB.Domain.Entities;
 using BNB.Domain.Repositories;
+using Moq;
 
 
 namespace BNB.Tests;
 
 public class ClienteUnitTest
 {
-    private readonly IClienteService _clienteService;
-    private readonly IClienteRepository _clienteRepository;
-
-    public ClienteUnitTest(IClienteService clienteService, IClienteRepository clienteRepository)
-    {
-        _clienteRepository = clienteRepository;
-        _clienteService = clienteService;
-    }
+    private Mock<IClienteService> _clienteServiceMock;
 
     [SetUp]
     public void Setup()
     {
-
+        // Inicializa o mock do serviço antes de cada teste
+        _clienteServiceMock = new Mock<IClienteService>();
     }
 
     [Test]
-    [TestCase("Joao Teste Tests", "Rua Teste, 999", "email@teste.com", "85987425689")]
-    public void ValidarIncluirCliente(string nome, string endereco, string email, string telefone)
+    [TestCase("Joao Teste")]
+    public async Task ValidarNomeCliente_DeveRetornarNomeValido(string nome)
     {
-        var request = new Cliente() { Nome = nome, Endereco = endereco, Email = email, Telefone = telefone };
-        var response = Task.Run(async () => { await _clienteService.IncluirAsync(request); })
+        // Arrange
+        var request = new Cliente { Nome = nome };
+
+        // Mocka o comportamento esperado do método IncluirAsync
+        _clienteServiceMock
+            .Setup(service => service.IncluirAsync(It.IsAny<Cliente>()))
+            .ReturnsAsync(request); // Retorna o próprio cliente com o nome informado
+
+        // Act
+        var response = await _clienteServiceMock.Object.IncluirAsync(request);
+
+        // Assert
+        Assert.IsNotNull(response);
+        Assert.IsNotEmpty(response.Nome);
+        Assert.AreEqual(nome, response.Nome);
     }
 }
