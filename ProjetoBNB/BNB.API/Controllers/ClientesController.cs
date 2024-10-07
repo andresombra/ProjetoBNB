@@ -1,8 +1,12 @@
-﻿using BNB.Application.Interfaces;
+﻿using Azure;
+using BNB.Application.Interfaces;
 using BNB.Domain.Entities;
 using BNB.Domain.Response;
+using BNB.Domain.Validators;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 
 namespace BNB.API.Controllers
@@ -57,6 +61,17 @@ namespace BNB.API.Controllers
 
             try
             {
+               var validator = new ClienteValidator();
+               var result = validator.Validate(cliente);
+               if (!result.IsValid)
+               {
+                  // Captura as mensagens de erro e junta-as em uma única string
+                  resp.Mensagem = string.Join("; ", result.Errors.Select(e => e.ErrorMessage));
+                  resp.Status = false;  // Definindo Status como falso devido a falha na validação
+
+                  return BadRequest(resp);
+               }
+
                await _clienteService.IncluirAsync(cliente);
                resp.Status = true;
                resp.Data = cliente;
