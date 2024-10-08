@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.10.0" />
+    <ProjectReference Include="..\BNB.Domain\BNB.Domain.csproj" />
   </ItemGroup>
 
 </Project>
